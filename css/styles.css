@@ -1,0 +1,143 @@
+    /* Estilos para o contêiner de busca */
+#search-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 350px;
+}
+
+#search-input {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 8px;
+    font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#search-button {
+    padding: 10px 15px;
+    background-color: #5a4cd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#search-button:hover {
+    background-color: #204499;
+}
+
+#search-results, #search-error {
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    box-sizing: border-box;
+}
+
+#search-results-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.search-result-item {
+    padding: 8px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    color: #555;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #e9e9e9;
+    border-radius: 4px;
+}
+
+.search-result-item span:first-child {
+    margin-right: 8px;
+}
+    /* STYLE DA MENSAGEM DE ERRO */
+    #search-error {
+        color: #D32F2F; /* Vermelho escuro */
+        background-color: #FFEBEE; /* Fundo vermelho claro */
+        border: 1px solid #EF9A9A; /* Borda vermelha */
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 0.95em;
+    }
+
+    #search-error .suggestions {
+        margin-top: 8px;
+        font-size: 0.85em;
+        color: #777;
+    }
+
+    /* INÍCIO DO CÓDIGO DA ANIMAÇÃO DE CHEGADA/PING */
+    #notification-animation-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Permite clicar no mapa por baixo */
+        z-index: 1000; /* Garante que a animação fique acima do mapa */
+        display: none; /* Começa invisível */
+        overflow: hidden; /* Oculta partes da animação que excedam o contêiner */
+    }
+
+    .arrival-circle {
+        position: absolute;
+        border: 4px solid #2354c5; /* Borda Azul */
+        border-radius: 50%; /* Transforma em círculo */
+        animation: pulse-shrink 1s forwards ease-out; /* Nome, duração, e tipo da animação */
+        transform: translate(-50%, -50%); /* Centraliza o círculo no ponto */
+        opacity: 0; /* Começa invisível */
+    }
+
+    @keyframes pulse-shrink {
+        0% {
+            transform: translate(-50%, -50%) scale(0); /* Começa bem pequeno */
+            opacity: 1; /* Fica visível */
+            width: 0px;
+            height: 0px;
+            border-width: 20px; /* Borda grossa no início */
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.5); /* Cresce rapidamente */
+            opacity: 1;
+            width: 80px;
+            height: 80px;
+            border-width: 10px;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0.5); /* Diminui e some */
+            opacity: 0; /* Desaparece */
+            width: 100px;
+            height: 100px;
+            border-width: 2px;
+        }
+    }
