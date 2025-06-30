@@ -107,6 +107,11 @@
     //
     //
     //
+    // Talvez seja interessante fazer um sistema que da dicas pro usuário na pesquisa "Não esá achando o que procura? Tente ativar um filtro....
+    //
+    //
+    //
+    //
    // 1. Definição do Mapa (EXISTENTE E DEVE VIR PRIMEIRO NO SEU <script>)
 // ESTA PARTE É FUNDAMENTAL QUE VENHA ANTES DE QUALQUER CÓDIGO QUE USE A VARIÁVEL 'map'.
 var map = L.map('map', {
@@ -133,7 +138,7 @@ let notificationAnimationContainer;
 
 // Lista de nomes de propriedades (campos) dentro do GeoJSON onde a busca será feita.
 const SEARCHABLE_PROPERTIES = [
-    'ID', 'Nome', 'nome', 'NOME', 'Name', 'empree', 'Empree', 'Empre', 'Empreend', 'Empreend_', 'Empreendi_', 'Empreen_', 'Empreendimento', 'empreendimento',
+    'ID', 'Nome', 'nome', 'NOME', 'Name', 'empree', 'Empree', 'Empre', 'Empreend', 'Empreend_','Empreen_', 'Empreendi_', 'git statusEmpreen_', 'Empreendimento', 'empreendimento',
     'adt_nm_adu', 'nome_local', 'local', 'barragem', 'estacao', 'codigo', 'municipio', 'bairro', 'rua', 'CD_MUN', 'NM_MUN', 'RegiÃ£o', 'NM_REGIAO'
 ];
 
@@ -152,22 +157,17 @@ function normalizeString(str) {
  */
 function getFeatureIcon(featureType) {
     const icons = {
-        'Point': '📌',// Funciona
-        'LineString': '💧',// Por hora não funciona
-        'Polygon': '🏞️'// Por hora não funciona
+        'Point': '🔺',             // Para pontos (Barragens...)
+        'MultiPoint': '🔺',        // Se houver múltiplas localizações pontuais
+        'LineString': '〰️',       // Para linhas (Ex: Sistema Integrado do Agreste-Adutora Alto do Capibaribe)
+        'MultiLineString': '〰️',  // Para múltiplas linhas
+        'Polygon': '📍',           // Para polígonos (se houver áreas simples)
+        'MultiPolygon': '📍',      // Para multipolígonos (Como bairros: Lagoa dos Gatos)
+        'GeometryCollection': '🗺️' // Para coleções de geometrias (Acredito que não temos)
     };
-    return icons[featureType] || '';
+    return icons[featureType] || '❓'; // Retorna '❓' para tipos desconhecidos/não mapeados
 }
 
-/**
- * Limpa qualquer destaque anterior no mapa, fechando o popup se houver.
- * Esta função foi simplificada, pois não há mais estilos de highlight para resetar.
- */
-
-/**
- * Destaca uma feição no mapa e exibe uma animação de notificação (a bolinha que pisca).
- * Implementa um fallback para garantir que a animação sempre dispare.
- */
 function highlightResult(result) {
 
     let targetLatLng = null;
@@ -265,16 +265,14 @@ function showNotFoundMessage(term) {
     searchErrorElem.innerHTML = `
         <div><b>"${term}" não encontrado.</b></div>
         <div class="suggestions">
-            <div>Por favor, verifique a ortografia</div>
-            <div>Tente escrever </div>
+            <div>➔ Por favor, verifique a ortografia.</div>
+            <div>➔ Tente escrever apenas primeira parte do nome. </div>
         </div>
     `;
     searchErrorElem.style.display = 'block';
 }
 
-/**
- * Exibe uma lista de resultados clicáveis. //////// Pesquisar sobre a viabilidade de "Recomendação de pesquisa"
- */
+/* Exibe uma lista de resultados clicáveis. //////// Pesquisar sobre a viabilidade de "Recomendação de pesquisa" */
 function showResultsList(results) {
     hideAllSearchElements();
     if (!searchResultsContainerElem) {
@@ -291,15 +289,13 @@ function showResultsList(results) {
     searchResultsContainerElem.style.display = 'block';
 }
 
-/**
- * Oculta a mensagem de erro e a lista de resultados.
- */
+/* Oculta a mensagem de erro e a lista de resultados. */
 function hideAllSearchElements() {
     if (searchResultsContainerElem) searchResultsContainerElem.style.display = 'none';
     if (searchErrorElem) searchErrorElem.style.display = 'none';
 }
 
-// --- FUNÇÃO ***PRINCIPAL*** DE BUSCA ---
+// --- FUNÇÃO ***PRINCIPAL*** DE BUSCA --- 
 
 /**
  * Executa a lógica de busca no mapa.
@@ -327,6 +323,9 @@ function performSearch() {
                             const latlng = layer.getLatLng();
                             featureBounds = L.latLngBounds(latlng, latlng);
                         }
+                        // --- ADICIONE ESTE CONSOLE.LOG TEMPORARIAMENTE ---
+    console.log("Feature Type detectado:", layer.feature.geometry.type, "para:", properties[propName]);
+    // --- FIM DO CONSOLE.LOG ---
                         foundFeatures.push({
                             layer: layer,
                             bounds: featureBounds,
@@ -397,11 +396,10 @@ function initializeSearchUI() {
 }
 
 // --- Executa a inicialização da UI quando a página estiver COMPLETAMENTE carregada ---
-// ESTA LINHA DEVERIA SER A ÚLTIMA DENTRO DA TAG <script>, MAS FICARIA INSUSTENTÁVEL.
 document.addEventListener('DOMContentLoaded', initializeSearchUI);
-    //
-    //
-    //
+    
+    //FIM SISTEMA DE BUSCA
+    
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
@@ -5902,17 +5900,18 @@ document.addEventListener('DOMContentLoaded', initializeSearchUI);
                 return L.shapeMarker(latlng, style_BarragensPlanejadas_62_0(feature));
             },
         });
-        //  LABELS DA PARTE DE FILTROS DO CÓDIGO + FORMATOS DE CHECKBOX
+        //  LABELS DA PARTE DE FILTROS DO CÓDIGO
         //  ÁREA DOS FILTROS
-        
-        bounds_group.addLayer(layer_BarragensPlanejadas_62);
-        var overlaysTree = [
-        {label: '<b>BARRAGENS</b>', selectAllCheckbox: true, children: [
+
+        bounds_group.addLayer(layer_BarragensPlanejadas_62); // Adiciona a camada 'Barragens Planejadas' ao grupo de camadas. Isso a torna visível no mapa no início.
+
+        var overlaysTree = [ // Define a estrutura da árvore de camadas que será usada pelo L.Control.Layers.Tree
+        {label: '<b>BARRAGENS</b>', selectAllCheckbox: true, children: [ 
             {label: 'Barragens Planejadas<br /><table><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_ÁguaTorta0.png" /></td><td>Água Torta</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Canhotinho1.png" /></td><td>Canhotinho</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Correntes2.png" /></td><td>Correntes</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Cotunguba3.png" /></td><td>Cotunguba</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_IpanemaII4.png" /></td><td>Ipanema II</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Itaíba5.png" /></td><td>Itaíba</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Itapirema6.png" /></td><td>Itapirema</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Itaquitinga7.png" /></td><td>Itaquitinga</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_Jacuípe8.png" /></td><td>Jacuípe</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_SirinhaémI9.png" /></td><td>Sirinhaém I</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_SirinhaémII10.png" /></td><td>Sirinhaém II</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensPlanejadas_62_També11.png" /></td><td>També</td></tr></table>', layer: layer_BarragensPlanejadas_62},
             {label: 'Barragens em Construção<br /><table><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_BarradeGuabiraba0.png" /></td><td>Barra de Guabiraba</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_Brejão1.png" /></td><td>Brejão</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_EngenhoMaranhão2.png" /></td><td>Engenho Maranhão</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_EngenhoPereira3.png" /></td><td>Engenho Pereira</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_Gatos4.png" /></td><td>Gatos</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_Igarapeba5.png" /></td><td>Igarapeba</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_PanelasII6.png" /></td><td>Panelas II</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemConstruo_61_SãoBentodoUna7.png" /></td><td>São Bento do Una</td></tr></table>', layer: layer_BarragensemConstruo_61},
             {label: 'Barragens em Operação<br /><table><tr><td style="text-align: center;"><img src="legend/BarragensemOperao_60_Barragemexistente0.png" /></td><td>Barragem existente</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemOperao_60_BarragemexistenteassociadaaoPISF1.png" /></td><td>Barragem existente associada ao PISF</td></tr></table>', layer: layer_BarragensemOperao_60},
             {label: 'Barragens em Recuperação<br /><table><tr><td style="text-align: center;"><img src="legend/BarragensemRecuperao_59_Inhumas0.png" /></td><td>Inhumas</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemRecuperao_59_Jazigo1.png" /></td><td>Jazigo</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemRecuperao_59_NiloCoelho2.png" /></td><td>Nilo Coelho</td></tr><tr><td style="text-align: center;"><img src="legend/BarragensemRecuperao_59_PoçoGrande3.png" /></td><td>Poço Grande</td></tr></table>', layer: layer_BarragensemRecuperao_59},]},
-        {label: '<b>INFORMAÇÕES COMPLEMENTARES</b>', selectAllCheckbox: true, children: [
+        {label: '<b>INFORMAÇÕES COMPLEMENTARES</b>', selectAllCheckbox: true, children: [ 
             {label: '<img src="legend/SedesMunicipais_58.png" /> Sedes Municipais', layer: layer_SedesMunicipais_58},
             {label: '<img src="legend/ComunidadesBeneficiadasAdutoras_57.png" /> Comunidades Beneficiadas - Adutoras', layer: layer_ComunidadesBeneficiadasAdutoras_57},
             {label: '<img src="legend/PortaldeIrrigaodoPISF_56.png" /> Portal de Irrigação do PISF', layer: layer_PortaldeIrrigaodoPISF_56},
@@ -5970,7 +5969,7 @@ document.addEventListener('DOMContentLoaded', initializeSearchUI);
             {label: '<img src="legend/MunicpiosAutnomoscomInvestimentos_10.png" /> Municípios Autônomos com Investimentos', layer: layer_MunicpiosAutnomoscomInvestimentos_10},
             {label: '<img src="legend/MunicpiosAutnomos_9.png" /> Municípios Autônomos', layer: layer_MunicpiosAutnomos_9},
             {label: '<img src="legend/MunicpioscomInvestimentosEstadual_8.png" /> Municípios com Investimentos Estadual', layer: layer_MunicpioscomInvestimentosEstadual_8},
-            {label: '<img src="legend/MunicpioscomInvestimentosNDBPEXPE_7.png" /> Municípios com Investimentos  NDB-PEX/PE', layer: layer_MunicpioscomInvestimentosNDBPEXPE_7},
+            {label: '<img src="legend/MunicpioscomInvestimentosNDBPEXPE_7.png" /> Municípios com Investimentos NDB-PEX/PE', layer: layer_MunicpioscomInvestimentosNDBPEXPE_7},
             {label: '<img src="legend/MunicpioscomInvestimentosBNB_6.png" /> Municípios com Investimentos BNB', layer: layer_MunicpioscomInvestimentosBNB_6},]},
         {label: '<b>REGIÕES DESENVOLVIMENTO DE PERNAMBUCO</b>', selectAllCheckbox: true, children: [
             {label: 'Municipios<br /><table><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãodoSãoFrancisco0.png" /></td><td>Sertão do São Francisco</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãodoAraripe1.png" /></td><td>Sertão do Araripe</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãoCentral2.png" /></td><td>Sertão Central</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãodeItaparica3.png" /></td><td>Sertão de Itaparica</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãodoPajeú4.png" /></td><td>Sertão do Pajeú</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_SertãodoMoxotó5.png" /></td><td>Sertão do Moxotó</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_AgresteMeridional6.png" /></td><td>Agreste Meridional</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_AgresteCentral7.png" /></td><td>Agreste Central</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_AgresteSetentrional8.png" /></td><td>Agreste Setentrional</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_MataNorte9.png" /></td><td>Mata Norte</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_MataSul10.png" /></td><td>Mata Sul</td></tr><tr><td style="text-align: center;"><img src="legend/Municipios_5_Metropolitana11.png" /></td><td>Metropolitana</td></tr></table>', layer: layer_Municipios_5},
@@ -5980,132 +5979,182 @@ document.addEventListener('DOMContentLoaded', initializeSearchUI);
             {label: "Google Satellite Hybrid", layer: layer_GoogleSatelliteHybrid_2},
             {label: "Google Labels", layer: layer_GoogleLabels_1},
             {label: "Google Traffic", layer: layer_GoogleTraffic_0},]},]
-        var lay = L.control.layers.tree(null, overlaysTree,{
-            //namedToggle: true,
-            //selectorBack: false,
-            //closedSymbol: '&#8862; &#x1f5c0;',
-            //openedSymbol: '&#8863; &#x1f5c1;',
-            //collapseAll: 'Collapse all',
-            //expandAll: 'Expand all',
-            collapsed: false, 
+        var lay = L.control.layers.tree(null, overlaysTree,{ // Inicializa o controle de camadas L.control.layers.tree
+            // Propriedades do L.Control.Layers.Tree
+            // namedToggle: true,
+            // selectorBack: false,
+            // closedSymbol: '&#8862; &#x1f5c0;',
+            // openedSymbol: '&#8863; &#x1f5c1;',
+            // collapseAll: 'Collapse all',
+            // expandAll: 'Expand all',
+            collapsed: false, // O controle de camadas não estará recolhido ao carregar
         });
-        lay.addTo(map);
-		document.addEventListener("DOMContentLoaded", function() {
+        lay.addTo(map); // Adiciona o controle de camadas ao mapa
+
+        document.addEventListener("DOMContentLoaded", function() { // Garante que o DOM está completamente carregado antes de executar o script
             // set new Layers List height which considers toggle icon
-            function newLayersListHeight() {
+            function newLayersListHeight() { // Função para ajustar a altura da lista de camadas
                 var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
-                if (layerScrollbarElement) {
+                if (layerScrollbarElement) { // Verifica se o elemento da barra de rolagem existe
                     var layersListElement = document.querySelector('.leaflet-control-layers-list');
-                    var originalHeight = layersListElement.style.height 
+                    var originalHeight = layersListElement.style.height
                         || window.getComputedStyle(layersListElement).height;
-                    var newHeight = parseFloat(originalHeight) - 50;
+                    var newHeight = parseFloat(originalHeight) - 50; // Reduz a altura em 50px
                     layersListElement.style.height = newHeight + 'px';
                 }
             }
-            var isLayersListExpanded = true;
-            var controlLayersElement = document.querySelector('.leaflet-control-layers');
-            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
-            // toggle Collapsed/Expanded and apply new Layers List height
-            toggleLayerControl.addEventListener('click', function() {
+            var isLayersListExpanded = true; // Variável para controlar o estado expandido/recolhido do painel
+            var controlLayersElement = document.querySelector('.leaflet-control-layers'); // O elemento principal do controle de camadas
+            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle'); // O ícone de alternância do controle de camadas
+
+            toggleLayerControl.addEventListener('click', function() { // Adiciona um ouvinte de evento para o clique no ícone de alternância
                 if (isLayersListExpanded) {
-                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded'); // Recolhe o painel
                 } else {
-                    controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                    controlLayersElement.classList.add('leaflet-control-layers-expanded'); // Expande o painel
                 }
-                isLayersListExpanded = !isLayersListExpanded;
-                newLayersListHeight()
-            });	
-			// apply new Layers List height if toggle layerstree
-			if (controlLayersElement) {
-				controlLayersElement.addEventListener('click', function(event) {
-					var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
-					if (toggleLayerHeaderPointer) {
-						newLayersListHeight();
-					}
-				});
-			}
+                isLayersListExpanded = !isLayersListExpanded; // Alterna o estado
+                newLayersListHeight() // Ajusta a altura da lista de camadas
+            });
+            // apply new Layers List height if toggle layerstree
+            if (controlLayersElement) { // Verifica se o elemento do controle de camadas existe
+                controlLayersElement.addEventListener('click', function(event) { // Adiciona um ouvinte para cliques dentro do painel
+                    // Este listener é para quando as categorias da árvore (os headers) são expandidas/recolhidas
+                    var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+                    if (toggleLayerHeaderPointer) { // Se o clique foi no ícone de expansão/recolhimento de uma categoria
+                        newLayersListHeight(); // Ajusta a altura da lista de camadas
+                    }
+                });
+            }
             // Collapsed/Expanded at Start to apply new height
-            setTimeout(function() {
+            setTimeout(function() { // Tenta "clicar" no toggle após 10ms
                 toggleLayerControl.click();
             }, 10);
-            setTimeout(function() {
+            setTimeout(function() { // Tenta "clicar" no toggle novamente após 10ms (total 20ms)
+                // Isso parece ser uma tentativa de forçar o painel a se expandir corretamente
+                // após um possível estado inicial incorreto, ou para re-calcular a altura.
                 toggleLayerControl.click();
             }, 10);
             // Collapsed touch/small screen
-            var isSmallScreen = window.innerWidth < 650;
-            if (isSmallScreen) {
-                setTimeout(function() {
-                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
-                    isLayersListExpanded = !isLayersListExpanded;
+            var isSmallScreen = window.innerWidth < 650; // Verifica se a tela é pequena
+            if (isSmallScreen) { // Se for tela pequena
+                setTimeout(function() { // Após 500ms
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded'); // Recolhe o painel
+                    isLayersListExpanded = !isLayersListExpanded; 
                 }, 500);
-            }  
-        });       
-        setBounds();
-        var i = 0;
+            }
+
+            // NOVO CÓDIGO NECESSÁRIO: Loop para interagir com os checkboxes e suas legendas.
+            // Este bloco PRECISA ser adicionado para o funcionamento das legendas no painel.
+            document.querySelectorAll('.leaflet-control-layers-tree input[type="checkbox"]').forEach(checkbox => {
+                const labelElement = checkbox.closest('label');
+                if (labelElement) {
+                    // CUIDADO AQUI: O seletor '.legend-table' só funciona se você ADICIONAR essa classe no HTML das tabelas.
+                    const legendTable = labelElement.querySelector('.legend-table');
+                    if (legendTable) {
+                        legendTable.classList.add('hidden'); // Esconde a legenda por padrão
+
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked) {
+                                legendTable.classList.remove('hidden'); // Mostra a legenda
+                            } else {
+                                legendTable.classList.add('hidden'); // Esconde a legenda
+                            }
+                        });
+
+                        // Verifica o estado inicial da camada e exibe a legenda se a camada estiver ativa
+                        if (checkbox.layer && map.hasLayer(checkbox.layer)) {
+                             legendTable.classList.remove('hidden');
+                        }
+                    }
+                }
+            });
+
+        }); // Fim do DOMContentLoaded
+
+        // Função para calcular o offset horizontal dinamicamente
+function calculateOffset(text) {
+    const length = text ? text.length : 0;
+    // Ajuste este multiplicador (0.8 ou 1.0) conforme a fonte e tamanho.
+    // Quanto maior o texto, mais negativo o offset.
+    const horizontalAdjustment = -length * 0.8; 
+    // Mantenha o seu offset vertical que você já achou bom, por exemplo, -16.
+    return [horizontalAdjustment, -16];
+}
+
+
+        setBounds(); // Chama a função setBounds uma vez no carregamento.
+        var i = 0; // Variável 'i' para índice, será resetada para cada loop 'eachLayer' abaixo.
+
+
+        // AQUI COMEÇA A CONFIGURAÇÃO DA TOOLTIP LABEL DOS ELEMENTOS "Grandes"
         layer_SedesMunicipais_58.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['nome'] !== null?String('<div style="color: #000000; font-size: 11pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['nome']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_SedesMunicipais_58'});
-            let totalMarkers = 0;
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.bindTooltip((layer.feature.properties['nome'] !== null ? String('<div class="label-content">' + layer.feature.properties['nome']) + '</div>' : ''), {permanent: true, offset: [0, -8], direction: 'top', className: 'css_SedesMunicipais_58'}); labels.push(layer);
+            labels.push(layer); 
+            totalMarkers += 1; 
+            layer.added = true;
+            addLabel(layer, i); 
+            i++; 
         });
-        var i = 0;
+        var i = 0; 
         layer_BarragensemRecuperao_59.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Empree'] !== null?String('<div style="color: #000000; font-size: 13pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['Empree']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BarragensemRecuperao_59'});
+            layer.bindTooltip((layer.feature.properties['Empree'] !== null ? String('<div class="label-content">' + layer.feature.properties['Empree']) + '</div>' : ''), {permanent: true, offset: [0, -8], direction: 'top', className: 'css_BarragensemRecuperao_59'}); labels.push(layer);
             labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.added = true;
+            addLabel(layer, i);
+            i++;
         });
-        var i = 0;
+        var i = 0; 
         layer_BarragensemOperao_60.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Empre'] !== null?String('<div style="color: #000000; font-size: 13pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['Empre']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BarragensemOperao_60'});
+            layer.bindTooltip((layer.feature.properties['Empre'] !== null ? String('<div class="label-content">' + layer.feature.properties['Empre']) + '</div>' : ''), {permanent: true, offset: [0, -8], direction: 'top', className: 'css_BarragensemOperao_60'}); labels.push(layer);
             labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.added = true;
+            addLabel(layer, i);
+            i++;
         });
-        var i = 0;
+        var i = 0; 
         layer_BarragensemConstruo_61.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Barragem'] !== null?String('<div style="color: #000000; font-size: 13pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['Barragem']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BarragensemConstruo_61'});
+             layer.bindTooltip((layer.feature.properties['Barragem'] !== null ? String('<div class="label-content">' + layer.feature.properties['Barragem']) + '</div>' : ''), {permanent: true, offset: [0, -8], direction: 'top', className: 'css_BarragensemConstruo_61'}); labels.push(layer);
             labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.added = true;
+            addLabel(layer, i);
+            i++;
         });
-        var i = 0;
+        var i = 0; 
         layer_BarragensPlanejadas_62.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Barragem'] !== null?String('<div style="color: #000000; font-size: 13pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['Barragem']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BarragensPlanejadas_62'});
-            labels.push(layer);
+             layer.bindTooltip((layer.feature.properties['Barragem'] !== null ? String('<div class="label-content">' + layer.feature.properties['Barragem']) + '</div>' : ''), {permanent: true, offset: [0, -8], direction: 'top', className: 'css_BarragensPlanejadas_62'}); labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.added = true;
+            addLabel(layer, i);
+            i++;
         });
+        // Fim dos blocos 'eachLayer'
+
+        // Chamadas para resetLabels em eventos do mapa
+      
         resetLabels([layer_MunicpioscomInvestimentosBNB_6,layer_MunicpioscomInvestimentosNDBPEXPE_7,layer_MunicpioscomInvestimentosEstadual_8,layer_MunicpiosAutnomos_9,layer_MunicpiosAutnomoscomInvestimentos_10,layer_SistemaIntegradoPaje_36,layer_ComunidadesRurais_51,layer_ComunidadesBeneficiadasAdutoras_57,layer_SedesMunicipais_58,layer_BarragensemRecuperao_59,layer_BarragensemOperao_60,layer_BarragensemConstruo_61,layer_BarragensPlanejadas_62]);
         map.on("zoomend", function(){
             resetLabels([layer_MunicpioscomInvestimentosBNB_6,layer_MunicpioscomInvestimentosNDBPEXPE_7,layer_MunicpioscomInvestimentosEstadual_8,layer_MunicpiosAutnomos_9,layer_MunicpiosAutnomoscomInvestimentos_10,layer_SistemaIntegradoPaje_36,layer_ComunidadesRurais_51,layer_ComunidadesBeneficiadasAdutoras_57,layer_SedesMunicipais_58,layer_BarragensemRecuperao_59,layer_BarragensemOperao_60,layer_BarragensemConstruo_61,layer_BarragensPlanejadas_62]);
@@ -6116,6 +6165,8 @@ document.addEventListener('DOMContentLoaded', initializeSearchUI);
         map.on("layerremove", function(){
             resetLabels([layer_MunicpioscomInvestimentosBNB_6,layer_MunicpioscomInvestimentosNDBPEXPE_7,layer_MunicpioscomInvestimentosEstadual_8,layer_MunicpiosAutnomos_9,layer_MunicpiosAutnomoscomInvestimentos_10,layer_SistemaIntegradoPaje_36,layer_ComunidadesRurais_51,layer_ComunidadesBeneficiadasAdutoras_57,layer_SedesMunicipais_58,layer_BarragensemRecuperao_59,layer_BarragensemOperao_60,layer_BarragensemConstruo_61,layer_BarragensPlanejadas_62]);
         });
+
+        
         </script>
     </body>
 </html>
