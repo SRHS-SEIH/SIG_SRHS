@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="css/images/SRHS-bighorilogo.png" alt="SRHS Logo">
+  <img src="css/images/SRHS-horilogoColor.png" alt="SRHS Logo">
 </p>
 
 # Visão Geral - SIG SRHS [![Versão](https://img.shields.io/badge/Vers%C3%A3o-1.1.3-blue.svg)](https://srhs-seih.github.io/SIG_SRHS/)
