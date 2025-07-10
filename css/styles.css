@@ -1,357 +1,357 @@
-    /* Estilos para o contêiner de busca */
+/* Estilos para o contêiner de busca */
 #search-container {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    max-width: 350px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 350px;
 }
 
 #search-input {
-    flex-grow: 1;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 8px;
-    font-size: 1em;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  flex-grow: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 8px;
+  font-size: 1em;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 #search-button {
-    padding: 10px 15px;
-    background-color: #2379d4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+  padding: 10px 15px;
+  background-color: #2379d4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 #search-button:hover {
-    background-color: #1246c0;
+  background-color: #1246c0;
 }
 
-#search-results, #search-error {
-    width: 100%;
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-    display: none;
-    box-sizing: border-box;
+#search-results,
+#search-error {
+  width: 100%;
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  box-sizing: border-box;
 }
 
 #search-results-header {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .search-result-item {
-    padding: 8px 0;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
-    align-items: center;
-    color: #555;
-    transition: background-color 0.2s ease;
+  padding: 8px 0;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  color: #555;
+  transition: background-color 0.2s ease;
 }
 
 .search-result-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .search-result-item:hover {
-    background-color: #e9e9e9;
-    border-radius: 4px;
+  background-color: #e9e9e9;
+  border-radius: 4px;
 }
 
 .search-result-item span:first-child {
-    margin-right: 8px;
+  margin-right: 8px;
 }
-    /* STYLE DA MENSAGEM DE ERRO */
-    #search-error {
-        color: #D32F2F; /* Vermelho escuro */
-        background-color: #FFEBEE; /* Fundo vermelho claro */
-        border: 1px solid #EF9A9A; /* Borda vermelha */
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 0.95em;
-    }
+/* STYLE DA MENSAGEM DE ERRO */
+#search-error {
+  color: #d32f2f; /* Vermelho escuro */
+  background-color: #ffebee; /* Fundo vermelho claro */
+  border: 1px solid #ef9a9a; /* Borda vermelha */
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.95em;
+}
 
-    #search-error .suggestions {
-        margin-top: 8px;
-        font-size: 0.85em;
-        color: #777;
-    }
+#search-error .suggestions {
+  margin-top: 8px;
+  font-size: 0.85em;
+  color: #777;
+}
 
-    /* INÍCIO DO CÓDIGO DA ANIMAÇÃO DE CHEGADA/PING 
+/* INÍCIO DO CÓDIGO DA ANIMAÇÃO DE CHEGADA/PING 
     Era mais obvio do que eu pensava desenvolver isso, consiste em criar um circulo invisível e usarmos apenas a borda dele!
     */
-    #notification-animation-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none; /* Permite clicar no mapa por baixo */
-        z-index: 1000; /* Garante que a animação fique acima do mapa */
-        display: none; /* Começa invisível */
-        overflow: hidden; /* Oculta partes da animação que excedam o contêiner */
-    }
+#notification-animation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Permite clicar no mapa por baixo */
+  z-index: 1000; /* Garante que a animação fique acima do mapa */
+  display: none; /* Começa invisível */
+  overflow: hidden; /* Oculta partes da animação que excedam o contêiner */
+}
 
-    .arrival-circle {
-        position: absolute;
-        border: 4px solid #2fc4ff; /* Borda Azul */
-        border-radius: 50%; /* Transforma em círculo */
-        animation: pulse-shrink 1s forwards ease-out; /* Nome, duração, e tipo da animação */
-        transform: translate(-50%, -50%); /* Centraliza o círculo no ponto */
-        opacity: 0; /* Começa invisível */
-    }
+.arrival-circle {
+  position: absolute;
+  border: 4px solid #2fc4ff; /* Borda Azul */
+  border-radius: 50%; /* Transforma em círculo */
+  animation: pulse-shrink 1s forwards ease-out; /* Nome, duração, e tipo da animação */
+  transform: translate(-50%, -50%); /* Centraliza o círculo no ponto */
+  opacity: 0; /* Começa invisível */
+}
 
-    @keyframes pulse-shrink {
-        0% {
-            transform: translate(-50%, -50%) scale(0); /* Começa bem pequeno */
-            opacity: 1; /* Fica visível */
-            width: 0px;
-            height: 0px;
-            border-width: 20px; /* Borda grossa no início */
-        }
-        20% {
-            transform: translate(-50%, -50%) scale(1.5); /* Cresce rapidamente */
-            opacity: 1;
-            width: 80px;
-            height: 80px;
-            border-width: 10px;
-        }
-        100% {
-            transform: translate(-50%, -50%) scale(0.5); /* Diminui e some */
-            opacity: 0; /* Desaparece */
-            width: 100px;
-            height: 100px;
-            border-width: 2px;
-        }
-    }
+@keyframes pulse-shrink {
+  0% {
+    transform: translate(-50%, -50%) scale(0); /* Começa bem pequeno */
+    opacity: 1; /* Fica visível */
+    width: 0px;
+    height: 0px;
+    border-width: 20px; /* Borda grossa no início */
+  }
+  20% {
+    transform: translate(-50%, -50%) scale(1.5); /* Cresce rapidamente */
+    opacity: 1;
+    width: 80px;
+    height: 80px;
+    border-width: 10px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.5); /* Diminui e some */
+    opacity: 0; /* Desaparece */
+    width: 100px;
+    height: 100px;
+    border-width: 2px;
+  }
+}
 
 /* Sistema de Layout das Labels */
 /* Estilo para as labels da camada Barragens Planejadas!!!!! */
 
 .css_SedesMunicipais_58 {
-    font-family: 'Arial', sans-serif;
-    font-size: 10px; 
-    font-weight: 400;
-    letter-spacing: 0.4px; 
-    font-style: normal;
-    text-transform: capitalize;
-    color: #000000;
-    background-color: #f2f2f2;
-    border-radius: 5px; 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 3px;
-    border-style: inset;  /* ESTILO DA BORDA: Essa parte aqui transforma a borda em para a estrutura 'inset'(Deixa bonito 2 cores para a label)!!!! */
-    border-width: 3px; 
-    border-color: #353535; 
-    -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    white-space: nowrap; /* Impede que o texto quebre linhas (desorganizaria TOTALMENTE o tamanho das labels)*/
-    text-align: center; 
-    position: absolute; 
-    transform: translateX(-50%); 
-    z-index: 1000;
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #000000;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 2px 3px;
+  border-style: inset; /* ESTILO DA BORDA: Essa parte aqui transforma a borda em para a estrutura 'inset'(Deixa bonito 2 cores para a label)!!!! */
+  border-width: 3px;
+  border-color: #353535;
+  -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  white-space: nowrap; /* Impede que o texto quebre linhas (desorganizaria TOTALMENTE o tamanho das labels)*/
+  text-align: center;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 .css_BarragensemRecuperao_59 {
-    font-family: 'Arial', sans-serif;
-    font-size: 10px; 
-    font-weight: 400;
-    letter-spacing: 0.4px; 
-    font-style: normal;
-    text-transform: capitalize;
-    color: #000000;
-    background-color: #f2f2f2;
-    border-radius: 5px; 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 3px;
-    border-style: inset;  
-    border-width: 3px; 
-    border-color: #e01a00; 
-    -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    white-space: nowrap; 
-    text-align: center; 
-    position: absolute; 
-    transform: translateX(-50%); 
-    z-index: 1000;
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #000000;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 2px 3px;
+  border-style: inset;
+  border-width: 3px;
+  border-color: #e01a00;
+  -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  white-space: nowrap;
+  text-align: center;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 .css_BarragensemOperao_60 {
-    font-family: 'Arial', sans-serif;
-    font-size: 10px; 
-    font-weight: 400;
-    letter-spacing: 0.4px; 
-    font-style: normal;
-    text-transform: capitalize;
-    color: #000000;
-    background-color: #f2f2f2;
-    border-radius: 5px; 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 3px;
-    border-style: inset;  
-    border-width: 3px; 
-    border-color: #8c75f0; 
-    -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    white-space: nowrap; 
-    text-align: center; 
-    position: absolute; 
-    transform: translateX(-50%);
-    z-index: 1000;
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #000000;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 2px 3px;
+  border-style: inset;
+  border-width: 3px;
+  border-color: #8c75f0;
+  -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  white-space: nowrap;
+  text-align: center;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 .css_BarragensemConstruo_61 {
-    font-family: 'Arial', sans-serif;
-    font-size: 10px; 
-    font-weight: 400;
-    letter-spacing: 0.4px; 
-    font-style: normal;
-    text-transform: capitalize;
-    color: #000000;
-    background-color: #f2f2f2;
-    border-radius: 5px; 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 3px;
-    border-style: inset;
-    border-width: 3px; 
-    border-color: #ffd901; 
-    -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    white-space: nowrap; 
-    text-align: center; 
-    position: absolute; 
-    transform: translateX(-50%); 
-    z-index: 1000;
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #000000;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 2px 3px;
+  border-style: inset;
+  border-width: 3px;
+  border-color: #ffd901;
+  -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  white-space: nowrap;
+  text-align: center;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 .css_BarragensPlanejadas_62 {
-    font-family: 'Arial', sans-serif;
-    font-size: 10px; 
-    font-weight: 400;
-    letter-spacing: 0.4px; 
-    font-style: normal;
-    text-transform: capitalize;
-    color: #000000;
-    background-color: #f2f2f2;
-    border-radius: 5px; 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    padding: 2px 3px;
-    border-style: inset;
-    border-width: 3px; 
-    border-color: #2e8cef; 
-    -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    box-shadow: -0.25px 0.75px 9px -0.25px rgba(85,85,85,0.36);
-    white-space: nowrap; 
-    text-align: center; 
-    position: absolute; 
-    transform: translateX(-50%); 
-    z-index: 1000;
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  font-style: normal;
+  text-transform: capitalize;
+  color: #000000;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 2px 3px;
+  border-style: inset;
+  border-width: 3px;
+  border-color: #2e8cef;
+  -webkit-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  -moz-box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  box-shadow: -0.25px 0.75px 9px -0.25px rgba(85, 85, 85, 0.36);
+  white-space: nowrap;
+  text-align: center;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 /* Reformulação geral dos detalhes do Pop-up */
 
 /* Estilos gerais do pop-up */
 .leaflet-popup-content-wrapper {
-    background-color: #ffffff; 
-    color: #333333; 
-    border-radius: 10px; 
-    opacity: 0.98; 
-    padding: 15px 20px; 
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
-    border: 1px solid #a7d9ee; 
-    overflow: hidden; 
-    font-family: Arial, sans-serif; 
+  background-color: #ffffff;
+  color: #333333;
+  border-radius: 10px;
+  opacity: 0.98;
+  padding: 15px 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #a7d9ee;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
 /* Estilo da setinha (a parte de baixo que aponta para onde foi clicado) do pop-up */
 .leaflet-popup-tip {
-    background: #ffffff; 
-    border: none; 
-    box-shadow: none; /* Achei melhor tirar a sombra padrão porque tava ficando relativamente feio */
-    width: 20px; 
-    height: 10px; 
-    position: relative; 
-    margin-top: -8px; /* Aqui é só um ajuste fino para encaixar certinho */
+  background: #ffffff;
+  border: none;
+  box-shadow: none; /* Achei melhor tirar a sombra padrão porque tava ficando relativamente feio */
+  width: 20px;
+  height: 10px;
+  position: relative;
+  margin-top: -8px; /* Aqui é só um ajuste fino para encaixar certinho */
 }
 
 /* Estilo do botão de fechar (Precisei colocar !important para garantir a aplicação do style...) */
 .leaflet-popup-close-button {
-    color: #007bff !important;
-    font-size: 24px !important;
-    font-weight: bold !important;
-    top: 2px !important; 
-    right: 5px !important; 
-    padding: 0 !important;
-    background: none !important;
-    width: 28px !important;
-    height: 28px !important;
-    line-height: 28px !important;
-    text-align: center !important;
-    transition: color 0.2s ease, background-color 0.2s ease !important;
-    outline: none !important;
+  color: #007bff !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+  top: 2px !important;
+  right: 5px !important;
+  padding: 0 !important;
+  background: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  text-align: center !important;
+  transition: color 0.2s ease, background-color 0.2s ease !important;
+  outline: none !important;
 }
 
 .leaflet-popup-close-button:hover {
-    color: #ca3e3e !important;
-    
+  color: #ff0000 !important;
 }
 /* Estilo para o CONTEÚDO do pop-up (tabela) >> Dessa forma se mantem a estrutura que já era usada. */
 .leaflet-popup-content table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .leaflet-popup-content th,
 .leaflet-popup-content td {
-    padding: 8px 0; 
-    text-align: left;
-    border-bottom: 1px solid #e0f2f7; 
-    font-size: 0.9em; 
+  padding: 8px 0;
+  text-align: left;
+  border-bottom: 1px solid #e0f2f7;
+  font-size: 0.9em;
 }
 /* Título do Pop-up*/
 .leaflet-popup-content th {
-    font-weight: bold;
-    color: #254278; 
-    min-width: 120px; 
-    vertical-align: top; 
+  font-weight: bold;
+  color: #254278;
+  min-width: 120px;
+  vertical-align: top;
 }
 /* Valores do Pop-up */
 .leaflet-popup-content td {
-    color: #5bb9ec; 
-    word-wrap: break-word; 
+  color: #5bb9ec;
+  word-wrap: break-word;
 }
 
 .leaflet-popup-content tr:last-child th,
 .leaflet-popup-content tr:last-child td {
-    border-bottom: none; /* Remove a borda da última linha >> Só para não ficar feio*/
+  border-bottom: none; /* Remove a borda da última linha >> Só para não ficar feio*/
 }
 
 /* Estilos para o Scrollbar do Pop-up */
@@ -364,48 +364,58 @@
 }
 */
 .leaflet-popup-content::-webkit-scrollbar {
-    width: 10px; 
-    height: 10px; 
+  width: 10px;
+  height: 10px;
 }
 
 .leaflet-popup-content::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Cor do "trilho" da barra de rolagem */
-    border-radius: 5px;
+  background: #f1f1f1; /* Cor do "trilho" da barra de rolagem */
+  border-radius: 5px;
 }
 
 .leaflet-popup-content::-webkit-scrollbar-thumb {
-    background-color: #a7d9ee; /* Cor do "polegar" (o arrastável)*/
-    border-radius: 5px;
-    border: 2px solid #f1f1f1; /* Borda para dar um efeito 3D e combinar com o trilho */
+  background-color: #a7d9ee; /* Cor do "polegar" (o arrastável)*/
+  border-radius: 5px;
+  border: 2px solid #f1f1f1; /* Borda para dar um efeito 3D e combinar com o trilho */
 }
 
 .leaflet-popup-content::-webkit-scrollbar-thumb:hover {
-    background-color: #3f8ec2; /* Azul um pouco mais escuro ao passar o mouse */
+  background-color: #3f8ec2; /* Azul um pouco mais escuro ao passar o mouse */
 }
 
 /* Para Firefox (necessita de prefixo, e as opções são mais limitadas) */
 .leaflet-popup-content {
-    scrollbar-width: thin; /* 'auto' | 'thin' | 'none' */
-    scrollbar-color: #a7d9ee #f1f1f1; /* cor_do_polegar cor_do_trilho */
+  scrollbar-width: thin; /* 'auto' | 'thin' | 'none' */
+  scrollbar-color: #a7d9ee #f1f1f1; /* cor_do_polegar cor_do_trilho */
+}
+
+/* Estilo para links dentro do conteúdo do pop-up */
+.leaflet-popup-content a {
+  color: #0044ff !important; 
+}
+
+/* Estilo para quando passar o mouse por cima */
+.leaflet-popup-content a:hover {
+  color: #023799 !important; 
 }
 
 /* Opcional: Efeito de entrada suave */
 /* Removi o transform inicial que pode causar conflito e usei apenas a opacidade */
 /* Caso precisar de um pouco mais de agilidade, podemos remover isso aqui*/
 .leaflet-popup {
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
 }
 .leaflet-popup.leaflet-zoom-animated {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* Importante caso queiramos a sombra...*/
 /* Ajustes para o contêiner principal do pop-up para garantir que a sombra se comporte bem */
 .leaflet-popup-pane .leaflet-popup {
-    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15)); 
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15));
 }
 /* PRECISA remover a sombra do wrapper, ela JÁ FOI APLICADA no .leaflet-popup */
 .leaflet-popup-content-wrapper {
-    box-shadow: none;
+  box-shadow: none;
 }
