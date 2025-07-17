@@ -97,7 +97,7 @@ var json_BarragensemConstruo_61 = {
         "Orgao r": "SRHS",
         "Etapa e": "Obras civis",
         Status_: "Obras civis",
-        "Valor g": "R$ 57.634.734,61",
+        "Valor g": "R$ 57.337.995,99",
         "Fonte de r": "Novo PAC",
         Início: "26-02-2025",
         Conclusão: "26-02-2026",
