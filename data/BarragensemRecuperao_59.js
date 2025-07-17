@@ -39,7 +39,7 @@ var json_BarragensemRecuperao_59 = {
         Conclusão: "18-01-2027", // CONFIRMAR //
         Percen: 0.0,
         Popu: "18207",
-        "Data da u": "14-07-20252",
+        "Data da u": "14-07-2025",
         Detalha:
           "https://docs.google.com/spreadsheets/d/1Ggdx3TZ76FZvIEdnbsoPYh8Y9viDfv6z/edit?gid=344396493#gid=344396493",
       },
